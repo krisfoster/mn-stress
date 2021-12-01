@@ -73,3 +73,14 @@ java.lang.OutOfMemoryError: Cannot reserve 16777216 bytes of direct buffer memor
 	at com.oracle.svm.core.thread.JavaThreads.threadStartRoutine(JavaThreads.java:596)
 	at com.oracle.svm.core.posix.thread.PosixJavaThreads.pthreadStartRoutine(PosixJavaThreads.java:192)
 ```
+
+## Update on using memory params with `netty`
+
+
+Graeme Rocher suggested adding the following params to the native image command line, in order to resolve the issues. FOlloing is the command line that resolves the out of memory errors. We still get error responses. The `test.sh` script doesn't have the params, as I wanted to preserve the errors. Note to myself - are these params documented somewhere?
+
+```sh
+./target/barry -Xmx256m -XX:MaxRAMPercentage=90.0 -Dio.netty.allocator.numDirectArenas=0 -Dio.netty.noPreferDirect=true &
+```
+
+
